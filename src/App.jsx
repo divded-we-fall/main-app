@@ -38,8 +38,8 @@ const ScreenManager = () => {
         <GameScreen
           lives={gameState.lives}
           level={gameState.currentLevel}
-          onGameOver={gameOver}
           onWin={winLevel}
+          onLevelFail={levelFail}
         />
       );
     case "lose":

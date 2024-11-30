@@ -1,0 +1,13 @@
+/* GameScreen.css */
+.moving-block {
+  animation: slide var(--animation-duration, 0.75s) linear infinite alternate;
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(var(--game-screen-width) - var(--block-width)));
+  }
+}

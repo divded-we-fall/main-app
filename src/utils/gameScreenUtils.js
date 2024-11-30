@@ -1,3 +1,5 @@
+import { gameScreenWidth, leniency } from "../data/constants";
+
 const calculateMissBlockColour = (missBlockWidth) => {
   const green = [34, 197, 94]; // RGB for #22c55e
   const red = [255, 0, 0]; // RGB for red
@@ -21,8 +23,19 @@ const calculateMissBlockColour = (missBlockWidth) => {
   return `rgb(${interpolatedColor.join(",")})`;
 };
 
+const calculateMissBlockWidth = (movingBlockLeft, movingBlockWidth) => {
+  const rawWidth = Math.abs(
+    movingBlockLeft + movingBlockWidth / 2 - gameScreenWidth / 2
+  );
+  return rawWidth < leniency ? 0 : rawWidth;
+};
+
 const getRandomItemInArray = (array) => {
   return array[Math.floor(Math.random() * array.length)];
 };
 
-export { calculateMissBlockColour, getRandomItemInArray };
+export {
+  calculateMissBlockColour,
+  calculateMissBlockWidth,
+  getRandomItemInArray,
+};

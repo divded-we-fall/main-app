@@ -1,25 +1,21 @@
 import React, { useState, useEffect, useRef, Fragment } from 'react';
-import { gameScreenWidth, blockWidth, gameScreenHeight, numberOfBlocksPerGame } from '../data/constants.js';
-import { calculateMissBlockColour, getRandomItemInArray } from '../utils/gameScreenUtils.js'
-import AnimatedNumberChange from '../components/AnimatedNumberChange.jsx';
+import { gameScreenWidth, blockWidth, gameScreenHeight, numberOfBlocksPerGame, leniency } from '../data/constants.js';
+import { calculateMissBlockColour, calculateMissBlockWidth, getRandomItemInArray } from '../utils/gameScreenUtils.js'
+import { AnimatedNumberChange, VideoClipper } from '../components/index.js';
 import { EmptyHeartIcon, FilledHeartIcon } from '../assets/icons/index.js';
-
-const perfectLeft = gameScreenWidth / 2 - blockWidth / 2;
+import '../styles/GameScreen.css';
+import { SpongeBobBrainRotQuizVideo } from '../assets/videos/index.js';
 
 const GameScreen = ({ lives, level, onLevelFail, onWin }) => {
   const [stackedBlocks, setStackedBlocks] = useState([]);
-  const [isMoving, setIsMoving] = useState(true); 
-
+  const [movingBlockWidth, setMovingBlockWidth] = useState(blockWidth);
   const containerRef = useRef(null);
   const movingBlockRef = useRef(null);
-
   const containerLeft = useRef(0);
 
-  const movingBlockWidth = stackedBlocks.reduce((acc, curr) => {  
-    return acc - Math.abs(curr - perfectLeft);
-  }, 394);
-  console.log('stackedBlocks',stackedBlocks)
-  console.log('movingBlockWidth',movingBlockWidth)
+  const closeMissMessages = ["sus", "gyatt", "-1", 'bruh'];
+  const mediumMissMessages = ["negative aura", "not sigma"];
+  const farMissMessages = ["what da hellllll", "internship gone"];
 
   useEffect(() => {
     if (containerRef.current) {
@@ -28,35 +24,66 @@ const GameScreen = ({ lives, level, onLevelFail, onWin }) => {
     }
   }, []);
 
-  if (stackedBlocks.length === numberOfBlocksPerGame) {
-    onWin();
-  }
+  useEffect(() => {
+    if (stackedBlocks.length === numberOfBlocksPerGame) {
+
+      // onWin();
+    }
+  }, [stackedBlocks, onWin]);
+
+
+
+  const handleKeyDown = (e) => {
+
+    if (e.code === 'Space') {
+
+      if (movingBlockRef.current && containerRef.current && stackedBlocks.length < numberOfBlocksPerGame) {
+        const blockRect = movingBlockRef.current.getBoundingClientRect();
+        const missBlockWidth = calculateMissBlockWidth(blockRect.left - containerLeft.current, movingBlockWidth);
+        const relativeLeft = missBlockWidth < leniency
+          ? gameScreenWidth / 2 - movingBlockWidth / 2
+          : blockRect.left - containerLeft.current;
+
+        // Reduce block width based on miss
+        const newBlockWidth = Math.max(movingBlockWidth - missBlockWidth, 0);
+        setMovingBlockWidth(newBlockWidth);
+
+        if (newBlockWidth === 0 || missBlockWidth > movingBlockWidth / 2) {
+          onLevelFail()
+        }
+
+        // Determine miss message
+        let missMessage = '';
+        if (missBlockWidth < leniency) {
+          missMessage = "";
+        }
+        else if (missBlockWidth < 75) {
+          missMessage = getRandomItemInArray(closeMissMessages);
+        }
+        else if (missBlockWidth < 125) {
+          missMessage = getRandomItemInArray(mediumMissMessages);
+        }
+        else {
+          missMessage = getRandomItemInArray(farMissMessages);
+        }
+        setStackedBlocks(prev => [...prev, {
+          left: relativeLeft,
+          width: movingBlockWidth,
+          missWidth: missBlockWidth,
+          missMessage: missMessage
+        }]);
+
+      }
+    }
+  };
 
   useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.code === 'Space' && isMoving) {
-        setIsMoving(false);
-
-        if (movingBlockRef.current && containerRef.current) {
-          const blockRect = movingBlockRef.current.getBoundingClientRect();
-          const containerRect = containerRef.current.getBoundingClientRect();
-
-          const relativeLeft = Math.abs((blockRect.left - containerRect.left + blockWidth / 2) - gameScreenWidth / 2) < 50
-            ? perfectLeft
-            : blockRect.left - containerRect.left;
-
-          setStackedBlocks(prev => [...prev, relativeLeft]);
-          setIsMoving(true);
-        }
-      }
-    };
-
     window.addEventListener('keydown', handleKeyDown);
-
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isMoving]);
+  }, [handleKeyDown]);
+
 
   return (
     <div className='flex flex-col items-center gap-4'>
@@ -69,6 +96,12 @@ const GameScreen = ({ lives, level, onLevelFail, onWin }) => {
         }}
         className={`relative z-10 border-5 bg-red-200 overflow-hidden`}
       >
+
+        {stackedBlocks.map((stackedBlock, index) => (
+          <VideoClipper rectangle={stackedBlock} index={index} />
+        ))
+        }
+
         <ScoreDisplay stackedBlocks={stackedBlocks} />
 
         <ComboDisplay stackedBlocks={stackedBlocks} />
@@ -78,21 +111,30 @@ const GameScreen = ({ lives, level, onLevelFail, onWin }) => {
         <StackedBlocks stackedBlocks={stackedBlocks} />
 
         <div className='absolute top-2 flex gap-4 right-2'>
-          {Array.from({ length: lives }, (_, index) => (
-            <img key={index} src={FilledHeartIcon} alt='heart' className='w-14 h-14' />
+          {Array.from({ length: 3 }, (_, index) => (
+            <img
+              key={index}
+              src={index < lives ? FilledHeartIcon : EmptyHeartIcon}
+              alt='heart'
+              className='w-14 h-14'
+            />
           ))}
         </div>
 
         <div
           ref={movingBlockRef}
           style={{
-            bottom: `${stackedBlocks.length * gameScreenHeight / numberOfBlocksPerGame}px`,
+            '--block-width': `${movingBlockWidth}px`,
+            '--game-screen-width': `${gameScreenWidth}px`,
+            '--animation-duration': `${level.speed}s`, // Set the animation duration here
+            bottom: `${(stackedBlocks.length * gameScreenHeight) / numberOfBlocksPerGame}px`,
             height: `${gameScreenHeight / numberOfBlocksPerGame}px`,
-            width: `${movingBlockWidth}px`
+            width: `${movingBlockWidth}px`,
           }}
-          className={`text-center border border-blue-700 absolute flex items-center justify-center bg-blue-400 
-          ${isMoving ? 'animate-slide' : ''}`}
-        >{`<div></div>`}
+          className={`text-center whitespace-nowrap border border-blue-700 absolute flex items-center justify-center bg-blue-400 moving-block : ''
+            }`}
+        >
+          {`<div></div>`}
           <div className='h-full w-1 left-1/2 -translate-x-1/2 bg-red-500 m-auto absolute top-0'></div>
         </div>
       </div>
@@ -100,76 +142,47 @@ const GameScreen = ({ lives, level, onLevelFail, onWin }) => {
   );
 };
 
-
 const StackedBlocks = ({ stackedBlocks }) => {
-  const [missMessages, setMissMessages] = useState([]);
-
-  const closeMissMessage = ["sus", "gyatt", "-1", 'bruh']
-  const mediumMissMessage = ["negative aura", "not sigma"]
-  const farMissMessage = ["what da hellllll", "internship gone"]
-
-  useEffect(() => {
-    let message = ''
-    const missBlockWidth = Math.abs((stackedBlocks[stackedBlocks.length - 1] + blockWidth / 2) - gameScreenWidth / 2)
-
-    if (isNaN(missBlockWidth)) {
-      return;
-    }
-    if (missBlockWidth < 50) {
-      message = "";
-    }
-    else if (missBlockWidth < 100) {
-      message = getRandomItemInArray(closeMissMessage);
-    }
-    else if (missBlockWidth < 150) {
-      message = getRandomItemInArray(mediumMissMessage);
-    }
-    else if (typeof missBlockWidth === 'number') {
-      message = getRandomItemInArray(farMissMessage);
-    }
-    setMissMessages(prev => [...prev, message]);
-  }, [stackedBlocks]);
-
   return (
     <>
-      {stackedBlocks.map((stackedBlockLeft, index) => {
-        const missBlockWidth = Math.abs((stackedBlockLeft + blockWidth / 2) - gameScreenWidth / 2)
+      <pre>{JSON.stringify(stackedBlocks, null, 2)}</pre>
+      {stackedBlocks.map((stackedBlock, index) => {
+        const missBlockWidth = Math.abs((stackedBlock.left + stackedBlock.width / 2) - gameScreenWidth / 2);
         return (
           <Fragment key={index}>
             <div
-              key={index}
               style={{
-                left: `${stackedBlockLeft}px`,
+                left: `${stackedBlock.left}px`,
                 bottom: `${index * gameScreenHeight / numberOfBlocksPerGame}px`,
-                width: `${blockWidth}px`,
+                width: `${stackedBlock.width}px`,
                 height: `${gameScreenHeight / numberOfBlocksPerGame}px`
               }}
               className="absolute bg-green-500 border border-green-600"
             >
               <div className='h-full w-1 left-1/2 -translate-x-1/2 bg-red-500 m-auto absolute top-0'></div>
             </div>
-            <div
-              key={`close-${index}`}
-              style={{
-                left: `${Math.min(650, stackedBlockLeft + blockWidth / 2)}px`,
-                bottom: `${index * gameScreenHeight / numberOfBlocksPerGame}px`,
-                width: `${missBlockWidth}px`,
-                height: `${gameScreenHeight / numberOfBlocksPerGame}px`,
-                backgroundColor: `${calculateMissBlockColour(missBlockWidth)}`
-              }}
-              className='absolute flex items-center justify-center'
-            >
-              {missMessages[index]}
-            </div>
+            {stackedBlock.missMessage && (
+              <div
+                style={{
+                  left: `${Math.min(650, stackedBlock.left + stackedBlock.width / 2)}px`,
+                  bottom: `${index * gameScreenHeight / numberOfBlocksPerGame}px`,
+                  width: `${missBlockWidth}px`,
+                  height: `${gameScreenHeight / numberOfBlocksPerGame}px`,
+                  backgroundColor: `${calculateMissBlockColour(missBlockWidth)}`
+                }}
+                className='absolute flex items-center justify-center text-white'
+              >
+                {stackedBlock.missMessage}
+              </div>
+            )}
           </Fragment>
         )
       })}
     </>
   );
 }
-
 const ComboDisplay = ({ stackedBlocks }) => {
-  let comboPerfectCount = [...stackedBlocks].reverse().findIndex(num => num !== perfectLeft);
+  let comboPerfectCount = [...stackedBlocks].reverse().findIndex(num => num.left !== gameScreenWidth / 2 - num.width / 2);
   if (comboPerfectCount === -1) {
     comboPerfectCount = stackedBlocks.length;
   }
@@ -191,14 +204,14 @@ const ScoreDisplay = ({ stackedBlocks }) => {
   let totalScore = 0;
   let comboCount = 0;
   for (let i = 0; i < stackedBlocks.length; i++) {
-    const blockLeft = stackedBlocks[i];
-    if (Math.abs(blockLeft - perfectLeft) < 50) {
+    const missBlockWidth = calculateMissBlockWidth(stackedBlocks[i].left, stackedBlocks[i].width);
+    if (missBlockWidth < leniency) {
       comboCount++;
     }
     else {
       comboCount = 0;
     }
-    totalScore += Math.max(300 - Math.abs(blockLeft - perfectLeft), 0) * Math.max(comboCount, 1);
+    totalScore += Math.max(300 - missBlockWidth * Math.max(comboCount, 1));
   }
   return (
     <AnimatedNumberChange score={totalScore} />

@@ -1,0 +1,1 @@
+export { default as SpongeBobBrainRotQuizVideo } from './spongebob-brain-rot-quiz.mov';
