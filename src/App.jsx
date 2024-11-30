@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { TitleScreen, LevelSelectScreen, GameScreen, LoseScreen, WinScreen } from './pages';
 import { useGameState } from './hooks/useGameState';
 
@@ -19,11 +19,11 @@ const ScreenManager = () => {
     gameOver,
     winLevel,
     restartGame,
-    continueToLevelSelect
+    continueToLevelSelect,
   } = useGameState();
-
+ 
   switch (gameState.currentScreen) {
-    case 'title':
+    case 'title': 
       return <TitleScreen onStart={startGame} />;
     case 'level-select':
       return <LevelSelectScreen onLevelSelect={selectLevel} />;

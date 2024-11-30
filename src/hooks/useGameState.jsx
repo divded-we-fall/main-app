@@ -60,7 +60,7 @@ export const useGameState = () => {
       currentScreen: 'level-select'
     }));
   };
-
+ 
   return {
     gameState,
     startGame,
@@ -69,6 +69,6 @@ export const useGameState = () => {
     winLevel,
     restartGame,
     levelFail,
-    continueToLevelSelect
+    continueToLevelSelect,
   };
 };

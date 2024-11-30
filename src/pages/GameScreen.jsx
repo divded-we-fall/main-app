@@ -15,6 +15,12 @@ const GameScreen = ({ lives, level, onLevelFail, onWin }) => {
 
   const containerLeft = useRef(0);
 
+  const movingBlockWidth = stackedBlocks.reduce((acc, curr) => {  
+    return acc - Math.abs(curr - perfectLeft);
+  }, 394);
+  console.log('stackedBlocks',stackedBlocks)
+  console.log('movingBlockWidth',movingBlockWidth)
+
   useEffect(() => {
     if (containerRef.current) {
       const rect = containerRef.current.getBoundingClientRect();
@@ -82,7 +88,7 @@ const GameScreen = ({ lives, level, onLevelFail, onWin }) => {
           style={{
             bottom: `${stackedBlocks.length * gameScreenHeight / numberOfBlocksPerGame}px`,
             height: `${gameScreenHeight / numberOfBlocksPerGame}px`,
-            width: `${blockWidth}px`
+            width: `${movingBlockWidth}px`
           }}
           className={`text-center border border-blue-700 absolute flex items-center justify-center bg-blue-400 
           ${isMoving ? 'animate-slide' : ''}`}
@@ -100,7 +106,7 @@ const StackedBlocks = ({ stackedBlocks }) => {
 
   const closeMissMessage = ["sus", "gyatt", "-1", 'bruh']
   const mediumMissMessage = ["negative aura", "not sigma"]
-  const farMissMessage = ["not skibidi toilet rizz", "what da hellllll", "internship gone"]
+  const farMissMessage = ["what da hellllll", "internship gone"]
 
   useEffect(() => {
     let message = ''
