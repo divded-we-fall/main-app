@@ -1,8 +1,14 @@
-import React, { useEffect } from 'react';
-import { TitleScreen, LevelSelectScreen, GameScreen, LoseScreen, WinScreen } from './pages';
-import { useGameState } from './hooks/useGameState';
+import React, { useEffect } from "react";
+import {
+  TitleScreen,
+  LevelSelectScreen,
+  GameScreen,
+  LoseScreen,
+  WinScreen,
+} from "./pages";
+import { useGameState } from "./hooks/useGameState";
 
-const App = () => { 
+const App = () => {
   return (
     <div className="w-full h-screen bg-gray-900 flex items-center justify-center">
       <ScreenManager />
@@ -21,29 +27,30 @@ const ScreenManager = () => {
     restartGame,
     continueToLevelSelect,
   } = useGameState();
- 
+
   switch (gameState.currentScreen) {
-    case 'title': 
+    case "title":
       return <TitleScreen onStart={startGame} />;
-    case 'level-select':
+    case "level-select":
       return <LevelSelectScreen onLevelSelect={selectLevel} />;
-    case 'game':
-      return <GameScreen
-        lives={gameState.lives}
-        level={gameState.currentLevel}
-        onGameOver={gameOver}
-        onWin={winLevel}
-      />;
-    case 'lose':
-      return <LoseScreen
-        score={gameState.score}
-        onRestart={restartGame}
-      />;
-    case 'win':
-      return <WinScreen
-        level={gameState.currentLevel}
-        onContinue={continueToLevelSelect}
-      />;
+    case "game":
+      return (
+        <GameScreen
+          lives={gameState.lives}
+          level={gameState.currentLevel}
+          onGameOver={gameOver}
+          onWin={winLevel}
+        />
+      );
+    case "lose":
+      return <LoseScreen score={gameState.score} onRestart={restartGame} />;
+    case "win":
+      return (
+        <WinScreen
+          level={gameState.currentLevel}
+          onContinue={continueToLevelSelect}
+        />
+      );
     default:
       return <TitleScreen onStart={startGame} />;
   }
