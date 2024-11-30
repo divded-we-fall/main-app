@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+import { gameScreenWidth, blockWidth} from './src/data/constants.js'
+
+
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
@@ -6,7 +9,7 @@ export default {
       keyframes: {
         slide: {
           "0%": { transform: "translateX(0)" },
-          "100%": { transform: "translateX(calc(300px))" }, // Adjusted to fit within container
+          "100%": { transform: `translateX(calc(${gameScreenWidth}px - ${blockWidth}px))` }, // Adjusted to fit within container
         },
       },
       animation: {

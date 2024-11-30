@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { LevelData } from './data/levelData';
+import { gameScreenWidth, blockWidth } from './data/constants.js'
 
 // Main Game Component
 const App = () => {
@@ -58,10 +59,7 @@ const App = () => {
   };
 
   const handleWin = () => {
-    setGameState(prev => ({
-      ...prev,
-      currentScreen: 'win'
-    }));
+    setGameState(prev => ({...prev, currentScreen: "Level Select", currentLevel: prev.currentLevel + 1}));
   };
 
   const handleRestart = () => {
@@ -139,21 +137,34 @@ const LevelSelect = ({ onLevelSelect }) => {
   );
 };
 
-// Game Screen Component
 const GameScreen = ({ level, onGameOver, onWin }) => {
   const [isMoving, setIsMoving] = useState(true);
-  const [lockedPosition, setLockedPosition] = useState(null);
-  const [blockCount, setBlockCount] = useState(0);
   const [stackedBlocks, setStackedBlocks] = useState([]);
-  const blockRef = useRef(null);
   const containerRef = useRef(null);
+  const blockRef = useRef(null);
+  
+  // Define constants outside of useState
+  const containerLeft = useRef(0);
+  const perfectLeft = 650 - blockWidth / 2;
 
-  if (stackedBlocks.length === 14) {
+  const closeMissMessage = ["Close!", "Oops!", "bruh"]
+  const mediumMissMessage = ["Almost!", "Not sigma",]
+  const farMissMessage = ["what da hellllll", "internship gone"]
+
+  // Update containerLeft when the component mounts or ref changes
+  useEffect(() => {
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      containerLeft.current = rect.left;
+    }
+  }, []);
+
+  if (stackedBlocks.length === 20) {
     onWin();
   }
 
   // Calculate total score by summing up the left positions of stacked blocks
-  const totalScore = stackedBlocks.reduce((sum, block) => sum + block.left, 0);
+  const totalScore = stackedBlocks.reduce((sum, blockLeft) => sum + blockLeft, 0);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -165,20 +176,15 @@ const GameScreen = ({ level, onGameOver, onWin }) => {
         if (blockRef.current && containerRef.current) {
           const blockRect = blockRef.current.getBoundingClientRect();
           const containerRect = containerRef.current.getBoundingClientRect();
-          const relativeLeft = blockRect.left - containerRect.left;
+          
+          const relativeLeft = Math.abs((blockRect.left + blockWidth/2) - 650) < 25 
+            ? perfectLeft 
+            : blockRect.left - containerRect.left;
 
           // Add the current block to stacked blocks
-          setStackedBlocks(prev => [
-            ...prev,
-            {
-              left: relativeLeft,
-              blockNumber: blockCount
-            }
-          ]);
+          setStackedBlocks(prev => [...prev, relativeLeft]);
 
-          // Increment block count and prepare for next block
-          setBlockCount(prev => prev + 1);
-          setLockedPosition(0); // Set to left of the container
+          // Prepare for next block
           setIsMoving(true);
         }
       }
@@ -189,43 +195,58 @@ const GameScreen = ({ level, onGameOver, onWin }) => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isMoving, blockCount]);
+  }, [isMoving]);
 
   return (
     <div
       ref={containerRef}
-      className="relative w-[700px] h-[calc(14*48px)] z-10 border-5 bg-red-200 overflow-hidden"
+      className={`relative w-[1300px] h-[calc(20*24px)] z-10 border-5 bg-red-200 overflow-hidden`}
     >
+      {/* Score */}
       <h1 className='z-20 relative'>Score: {Math.round(totalScore)}</h1>
-      <div className='h-full w-1 left-1/2 z-10 -translate-x-1/2  bg-red-500 m-auto absolute top-0 '></div>
+
+      {/* Red Divider in the middle */}
+      <div className='h-full w-1 left-1/2 z-10 -translate-x-1/2  bg-red-600 m-auto absolute top-0 '></div>
 
       {/* Render stacked blocks */}
-      {stackedBlocks.map((block) => (
+      {stackedBlocks.map((blockLeft, index) => (
         <div 
-          key={block.blockNumber}
+          key={index}
           style={{
-            left: `${block.left}px`,
-            bottom: `${block.blockNumber * 48}px`
+            left: `${blockLeft}px`,
+            bottom: `${index * 24}px`
           }}
-          className="absolute h-12 w-[400px] bg-green-500"
-        >        <div className='h-full w-1 left-1/2 -translate-x-1/2  bg-red-500 m-auto absolute top-0 '></div>
+          className="absolute h-[24px] w-[394px] bg-green-500 border border-green-600"
+        >        
+          <div className='h-full w-1 left-1/2 -translate-x-1/2  bg-red-500 m-auto absolute top-0 '></div>
         </div>
       ))}
 
-      {stackedBlocks.map((block) => (
-        <div style={{ 
-          left: `${200}px`,
-          bottom: `${block.blockNumber * 48}px`
-        }} className='absolute'>close!</div>
-      ))}
+      {/* Close! Text */}
+      {containerLeft.current > 0 && stackedBlocks.map((blockLeft, index) => { 
+        const missBlockWidth = Math.abs((blockLeft + blockWidth/2) - 650)
+        return (
+        <div
+          key={`close-${index}`}
+          style={{ 
+            left: `${Math.min(650, blockLeft + 197)}px`,
+            bottom: `${index * 24}px`,
+            width: `${missBlockWidth}px`,
+            height: `24px`
+          }} 
+          className='absolute flex items-center justify-center bg-red-400'
+        >
+        {missBlockWidth < 50 ? "" : missBlockWidth < 100 ?  "Close!" : missBlockWidth < 150 ? "Medium!" : "Far!"   }
+        </div>
+      )})}
 
+      {/* Moving block */}
       <div
         ref={blockRef}
         style={{
-          left: lockedPosition !== null ? `${lockedPosition}px` : undefined,
-          bottom: `${blockCount * 48}px`
+          bottom: `${stackedBlocks.length * 24}px`
         }}
-        className={`text-center absolute h-12 w-[400px] flex items-center justify-center bg-blue-500 
+        className={`text-center border border-blue-700 absolute h-[24px] w-[394px] flex items-center justify-center bg-blue-400 
           ${isMoving ? 'animate-slide' : ''}`}
       >{`<div></div>`}
         <div className='h-full w-1 left-1/2 -translate-x-1/2  bg-red-500 m-auto absolute top-0 '></div>
@@ -233,23 +254,6 @@ const GameScreen = ({ level, onGameOver, onWin }) => {
     </div>
   );
 };
-
-// Lose Screen Component
-const LoseScreen = ({ score, onRestart }) => {
-  return (
-    <div className="text-center text-white">
-      <h2 className="text-4xl mb-8">Game Over</h2>
-      <p className="mb-4">Your Score: {score}</p>
-      <button
-        onClick={onRestart}
-        className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
-      >
-        Restart
-      </button>
-    </div>
-  );
-};
-
 // Win Screen Component
 const WinScreen = ({ level, onContinue }) => {
   return (
