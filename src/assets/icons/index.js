@@ -13,3 +13,5 @@ export { default as SettingsIcon } from "./settings.svg";
 export { default as TableIcon } from "./table-icon.svg";
 export { default as UpArrowIcon } from "./up-arrow.svg";
 export { default as UploadFileIcon } from "./upload-file.svg";
+export { default as EmptyHeartIcon } from "./empty-heart.svg";
+export { default as FilledHeartIcon } from "./filled-heart.svg";
