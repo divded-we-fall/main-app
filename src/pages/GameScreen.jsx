@@ -5,7 +5,6 @@ import { AnimatedNumberChange, VideoClipper } from '../components/index.js';
 import { EmptyHeartIcon, FilledHeartIcon } from '../assets/icons/index.js';
 import '../styles/GameScreen.css';
 import { SpongeBobBrainRotQuizVideo } from '../assets/videos/index.js';
-import { useGameState } from '../hooks/useGameState.jsx';
 import LevelFailModal from './LevelFailModal.jsx';
 
 const GameScreen = ({ lives, level, onWin, onGameOver, onLevelFail }) => {
