@@ -4,3 +4,4 @@ export { default as GameScreen } from './GameScreen';
 export { default as WinScreen } from './WinScreen';
 export { default as LoseScreen } from './LoseScreen';
 export { default as PauseScreen } from './PauseScreen';
+export { default as LevelFailModal } from './LevelFailModal';

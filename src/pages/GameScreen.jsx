@@ -5,10 +5,14 @@ import { AnimatedNumberChange, VideoClipper } from '../components/index.js';
 import { EmptyHeartIcon, FilledHeartIcon } from '../assets/icons/index.js';
 import '../styles/GameScreen.css';
 import { SpongeBobBrainRotQuizVideo } from '../assets/videos/index.js';
+import { useGameState } from '../hooks/useGameState.jsx';
+import LevelFailModal from './LevelFailModal.jsx';
 
-const GameScreen = ({ lives, level, onLevelFail, onWin }) => {
+const GameScreen = ({ lives, level, onWin, onGameOver, onLevelFail }) => {
   const [stackedBlocks, setStackedBlocks] = useState([]);
   const [movingBlockWidth, setMovingBlockWidth] = useState(blockWidth);
+  const [isLevelFailed, setIsLevelFailed] = useState(false);
+
   const containerRef = useRef(null);
   const movingBlockRef = useRef(null);
   const containerLeft = useRef(0);
@@ -16,6 +20,22 @@ const GameScreen = ({ lives, level, onLevelFail, onWin }) => {
   const closeMissMessages = ["sus", "gyatt", "-1", 'bruh'];
   const mediumMissMessages = ["negative aura", "not sigma"];
   const farMissMessages = ["what da hellllll", "internship gone"];
+
+  const handleLevelFail = () => {
+    onLevelFail();
+    if (lives - 1 <= 0) {
+      onGameOver();
+    } else {
+      setIsLevelFailed(true);
+      setStackedBlocks([]);
+    }
+  };
+
+  const handleTryAgain = () => {
+    setIsLevelFailed(false);
+    setStackedBlocks([]);
+    setMovingBlockWidth(blockWidth);
+  };
 
   useEffect(() => {
     if (containerRef.current) {
@@ -26,8 +46,7 @@ const GameScreen = ({ lives, level, onLevelFail, onWin }) => {
 
   useEffect(() => {
     if (stackedBlocks.length === numberOfBlocksPerGame) {
-      console.log('win')
-      // onWin();
+      onWin();
     }
   }, [stackedBlocks, onWin]);
 
@@ -35,7 +54,7 @@ const GameScreen = ({ lives, level, onLevelFail, onWin }) => {
 
   const handleKeyDown = (e) => {
 
-    if (e.code === 'Space') {
+    if (e.code === 'Space' && !isLevelFailed) {
 
       if (movingBlockRef.current && containerRef.current && stackedBlocks.length < numberOfBlocksPerGame) {
         const blockRect = movingBlockRef.current.getBoundingClientRect();
@@ -49,7 +68,7 @@ const GameScreen = ({ lives, level, onLevelFail, onWin }) => {
         setMovingBlockWidth(newBlockWidth);
 
         if (newBlockWidth === 0 || missBlockWidth > movingBlockWidth / 2) {
-          onLevelFail()
+          handleLevelFail()
         }
 
         // Determine miss message
@@ -88,6 +107,7 @@ const GameScreen = ({ lives, level, onLevelFail, onWin }) => {
   return (
     <div className='flex flex-col items-center gap-4'>
       <h1 className='text-white'>Build the talk tuah podcast</h1>
+      {isLevelFailed && <LevelFailModal onTryAgain={handleTryAgain} />}
       <div
         ref={containerRef}
         style={{
@@ -106,19 +126,21 @@ const GameScreen = ({ lives, level, onLevelFail, onWin }) => {
 
         <ComboDisplay stackedBlocks={stackedBlocks} />
 
-        <div  style={{
+        <div style={{
           opacity: stackedBlocks.length === numberOfBlocksPerGame ? 0 : 1,
-        }}className='h-full w-[1px] left-1/2 z-10 -translate-x-1/2 bg-red-600 m-auto absolute top-0'></div>
+        }} className='h-full w-[1px] left-1/2 z-10 -translate-x-1/2 bg-red-600 m-auto absolute top-0'></div>
 
         <StackedBlocks stackedBlocks={stackedBlocks} />
 
-        <div className='absolute top-2 flex gap-4 right-2'>
-          {Array.from({ length: 3 }, (_, index) => (
+        <div className="absolute top-2 right-2 flex gap-2">
+          {[1, 2, 3].map((heartIndex) => (
             <img
-              key={index}
-              src={index < lives ? FilledHeartIcon : EmptyHeartIcon}
-              alt='heart'
-              className='w-14 h-14'
+              key={heartIndex}
+              src={
+                heartIndex <= lives ? FilledHeartIcon : EmptyHeartIcon
+              }
+              alt={`Heart ${heartIndex}`}
+              className="w-10 h-10"
             />
           ))}
         </div>
@@ -133,7 +155,7 @@ const GameScreen = ({ lives, level, onLevelFail, onWin }) => {
             height: `${gameScreenHeight / numberOfBlocksPerGame}px`,
             width: `${movingBlockWidth}px`,
           }}
-          className={`text-center whitespace-nowrap border border-blue-700 absolute flex items-center justify-center bg-blue-400 moving-block : ''
+          className={`text-center whitespace-nowrap border border-blue-700 absolute flex items-center justify-center bg-blue-400 ${!isLevelFailed ? "moving-block" : ''
             }`}
         >
           {`<div></div>`}
