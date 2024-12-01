@@ -1,66 +1,69 @@
-import { useState } from 'react';
-import { LevelData } from '../data/levelData';
+import { useState } from "react";
+import { LevelData } from "../data/levelData";
 
 export const useGameState = () => {
   const [gameState, setGameState] = useState({
     lives: 3,
-    currentScreen: 'title',
+    currentScreen: "title",
+    highestLevel: 1,
+    selectedLevel: null,
     currentLevel: null,
-    score: 0
+    score: 0,
   });
 
   const startGame = () => {
-    setGameState(prev => ({ ...prev, currentScreen: 'level-select' }));
+    setGameState((prev) => ({ ...prev, currentScreen: "level-select" }));
   };
 
   const selectLevel = (level) => {
-    setGameState(prev => ({
+    setGameState((prev) => ({
       ...prev,
       selectedLevel: level,
-      currentScreen: 'game',
-      currentLevel: LevelData[level]
+      currentScreen: "game",
+      currentLevel: LevelData[level],
     }));
   };
 
   const levelFail = () => {
-    setGameState(prev => ({
+    setGameState((prev) => ({
       ...prev,
-      lives: prev.lives - 1
+      lives: prev.lives - 1,
     }));
-  }
+  };
 
   const gameOver = (score) => {
-    setGameState(prev => ({
+    setGameState((prev) => ({
       ...prev,
-      currentScreen: 'lose',
-      score: score
+      currentScreen: "lose",
+      score: score,
     }));
   };
 
   const winLevel = () => {
-    setGameState(prev => ({
+    setGameState((prev) => ({
       ...prev,
-      currentScreen: 'win',
-      currentLevel: prev.currentLevel + 1
+      currentScreen: "win",
+      highestLevel: prev.highestLevel + 1,
+      currentLevel: prev.currentLevel + 1,
     }));
   };
 
   const restartGame = () => {
-    setGameState(prev => ({
+    setGameState((prev) => ({
       ...prev,
-      currentScreen: 'level-select',
+      currentScreen: "level-select",
       score: 0,
-      lives: 3
+      lives: 3,
     }));
   };
 
   const continueToLevelSelect = () => {
-    setGameState(prev => ({
+    setGameState((prev) => ({
       ...prev,
-      currentScreen: 'level-select'
+      currentScreen: "level-select",
     }));
   };
- 
+
   return {
     gameState,
     startGame,

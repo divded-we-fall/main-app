@@ -32,7 +32,13 @@ const ScreenManager = () => {
     case "title":
       return <TitleScreen onStart={startGame} />;
     case "level-select":
-      return <LevelSelectScreen onLevelSelect={selectLevel} />;
+      console.log(gameState.highestLevel);
+      return (
+        <LevelSelectScreen
+          onLevelSelect={selectLevel}
+          highestLevel={gameState.highestLevel}
+        />
+      );
     case "game":
       return (
         <GameScreen
