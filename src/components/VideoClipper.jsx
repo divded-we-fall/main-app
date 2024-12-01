@@ -1,9 +1,19 @@
-import React from 'react';
-import { SpongeBobBrainRotQuizVideo } from '../assets/videos';
+import React, { useEffect, useRef } from 'react';
+import { SpongeBobBrainRotQuizVideo, SpeedTrollingKSI, FitXFearless } from '../assets/videos';
 import { gameScreenHeight, blockWidth, gameScreenWidth } from '../data/constants';
 
-const VideoClipper = ({ rectangle, index }) => {
-  console.log(rectangle);
+const VideoClipper = ({ rectangle, index, reveal = false }) => {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    if (reveal && videoRef.current) {
+      videoRef.current.currentTime = 0; // Reset the video to the beginning
+      videoRef.current.play();
+    } else if (videoRef.current) {
+      videoRef.current.pause(); // Pause the video when not revealed
+    }
+  }, [reveal]);
+
   return (
     <>
       <svg
@@ -25,18 +35,19 @@ const VideoClipper = ({ rectangle, index }) => {
         </defs>
       </svg>
       <video
-        src={SpongeBobBrainRotQuizVideo}
+        ref={videoRef}
+        src={FitXFearless}
         width={blockWidth}
         height={gameScreenHeight}
         style={{
           clipPath: `url(#clip-path-${index})`,
           position: 'absolute',
           top: 0,
+          opacity: `${reveal ? '1' : '0'}`,
         }}
-        autoPlay
-        muted
         loop
-        className=' left-1/2 z-10 -translate-x-1/2 absolute'
+        muted={false}
+        className="left-1/2 transition-opacity duration-1000 z-10 -translate-x-1/2 absolute"
       />
     </>
   );

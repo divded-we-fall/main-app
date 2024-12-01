@@ -26,7 +26,7 @@ const GameScreen = ({ lives, level, onLevelFail, onWin }) => {
 
   useEffect(() => {
     if (stackedBlocks.length === numberOfBlocksPerGame) {
-
+      console.log('win')
       // onWin();
     }
   }, [stackedBlocks, onWin]);
@@ -92,13 +92,13 @@ const GameScreen = ({ lives, level, onLevelFail, onWin }) => {
         ref={containerRef}
         style={{
           height: `${gameScreenHeight}px`,
-          width: `${gameScreenWidth}px`
+          width: `${gameScreenWidth}px`,
         }}
         className={`relative z-10 border-5 bg-red-200 overflow-hidden`}
       >
 
         {stackedBlocks.map((stackedBlock, index) => (
-          <VideoClipper rectangle={stackedBlock} index={index} />
+          <VideoClipper rectangle={stackedBlock} index={index} reveal={stackedBlocks.length === numberOfBlocksPerGame} />
         ))
         }
 
@@ -106,7 +106,9 @@ const GameScreen = ({ lives, level, onLevelFail, onWin }) => {
 
         <ComboDisplay stackedBlocks={stackedBlocks} />
 
-        <div className='h-full w-[1px] left-1/2 z-10 -translate-x-1/2 bg-red-600 m-auto absolute top-0'></div>
+        <div  style={{
+          opacity: stackedBlocks.length === numberOfBlocksPerGame ? 0 : 1,
+        }}className='h-full w-[1px] left-1/2 z-10 -translate-x-1/2 bg-red-600 m-auto absolute top-0'></div>
 
         <StackedBlocks stackedBlocks={stackedBlocks} />
 
@@ -145,7 +147,6 @@ const GameScreen = ({ lives, level, onLevelFail, onWin }) => {
 const StackedBlocks = ({ stackedBlocks }) => {
   return (
     <>
-      <pre>{JSON.stringify(stackedBlocks, null, 2)}</pre>
       {stackedBlocks.map((stackedBlock, index) => {
         const missBlockWidth = Math.abs((stackedBlock.left + stackedBlock.width / 2) - gameScreenWidth / 2);
         return (
