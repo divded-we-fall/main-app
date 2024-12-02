@@ -1,21 +1,30 @@
 import { useState } from "react";
 import { LevelData } from "../data/levelData";
+import select_sfx from "../assets/sfx/select.mp3";
 
 export const useGameState = () => {
   const [gameState, setGameState] = useState({
     lives: 3,
     currentScreen: "title",
-    highestLevel: 1,
+    highestLevel: 5,
     selectedLevel: null,
     currentLevel: null,
     score: 0,
   });
 
+  const playSFX = (file, volume) => {
+    const sfx = new Audio(file);
+    sfx.volume = volume; // Set volume
+    sfx.play();
+  };
+
   const startGame = () => {
+    playSFX(select_sfx, 0.2);
     setGameState((prev) => ({ ...prev, currentScreen: "level-select" }));
   };
 
   const selectLevel = (level) => {
+    playSFX(select_sfx, 0.2);
     setGameState((prev) => ({
       ...prev,
       selectedLevel: level,
@@ -49,6 +58,7 @@ export const useGameState = () => {
   };
 
   const restartGame = () => {
+    playSFX(select_sfx, 0.2);
     setGameState((prev) => ({
       ...prev,
       currentScreen: "level-select",

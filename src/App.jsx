@@ -5,6 +5,7 @@ import {
   GameScreen,
   LoseScreen,
   WinScreen,
+  GameWinScreen,
 } from "./pages";
 import { useGameState } from "./hooks/useGameState";
 
@@ -52,12 +53,15 @@ const ScreenManager = () => {
     case "lose":
       return <LoseScreen score={gameState.score} onRestart={restartGame} />;
     case "win":
-      return (
+      return gameState.highestLevel < 6 ? (
         <WinScreen
           level={gameState.currentLevel}
           onContinue={continueToLevelSelect}
         />
+      ) : (
+        <GameWinScreen score={gameState.score} />
       );
+
     default:
       return <TitleScreen onStart={startGame} />;
   }
