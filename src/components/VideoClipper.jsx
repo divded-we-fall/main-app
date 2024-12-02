@@ -1,17 +1,21 @@
 import React, { useEffect, useRef } from 'react';
 import { gameScreenHeight, blockWidth, gameScreenWidth, numberOfBlocksPerGame } from '../data/constants';
 
-const VideoClipper = ({ rectangle, index, video, reveal = false }) => {
+const VideoClipper = ({ rectangle, index, video, reveal = false, volume = 0.1 }) => {
   const videoRef = useRef(null);
 
   useEffect(() => {
-    if (reveal && videoRef.current) {
-      videoRef.current.currentTime = 0; // Reset the video to the beginning
-      videoRef.current.play();
-    } else if (videoRef.current) {
-      videoRef.current.pause(); // Pause the video when not revealed
+    if (videoRef.current) {
+      videoRef.current.volume = volume; // Set the volume
+
+      if (reveal) {
+        videoRef.current.currentTime = 0; // Reset the video to the beginning
+        videoRef.current.play();
+      } else {
+        videoRef.current.pause(); // Pause the video when not revealed
+      }
     }
-  }, [reveal]);
+  }, [reveal, volume]);
 
   return (
     <>
