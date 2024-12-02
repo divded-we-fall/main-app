@@ -167,7 +167,7 @@ const GameScreen = ({ lives, level, onWin, onGameOver, onLevelFail }) => {
   return (
     <div className="flex flex-col items-center gap-4">
       <h1 className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600 animate-pulse">
-        Build the talk tuah podcast
+      {level.name}
       </h1>
       {isLevelFailed && <LevelFailModal onTryAgain={handleTryAgain} />}
       <div

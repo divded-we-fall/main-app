@@ -8,7 +8,7 @@ export const LevelData = {
     videoUrl: TalkTuah,
     music: "src/assets/music/MDK - Press Start [FREE DOWNLOAD].mp3",
     initialBlockWidth: 192,
-    speed: 1,
+    speed: 2,
     videoLength: 7
   },
   2: {
@@ -17,7 +17,7 @@ export const LevelData = {
     videoUrl: DonPollo,
     music: "src/assets/music/Dex Arson - Round 1.mp3",
     initialBlockWidth: 180,
-    speed: 1.2,
+    speed: 1.25,
     videoLength: 15
   },
   3: {
@@ -26,7 +26,7 @@ export const LevelData = {
     videoUrl: KSISong,
     music: "src/assets/music/Glorious Morning.mp3",
     initialBlockWidth: 180,
-    speed: 1.2,
+    speed: 1,
     videoLength: 21
   },
   4: {
@@ -35,7 +35,7 @@ export const LevelData = {
     videoUrl: Ronaldo,
     music: "src/assets/music/Robotic Nightmares.mp3",
     initialBlockWidth: 180,
-    speed: 1.2,
+    speed: 0.9,
     videoLength: 12
   },
   5: {
@@ -44,7 +44,7 @@ export const LevelData = {
     videoUrl: memenome,
     music: "src/assets/music/Dimrain47 - At the Speed of Light.mp3",
     initialBlockWidth: 180,
-    speed: 1.2,
+    speed: 0.75,
     videoLength: 38
   },
   // Add more levels...
