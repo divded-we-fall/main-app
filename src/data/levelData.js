@@ -4,7 +4,7 @@ import { DonPollo, TalkTuah, Ronaldo, KSISong, memenome} from '../assets/videos/
 export const LevelData = {
   1: {
     name: "Peak Podcast",
-    color: "blue",
+    color: "to-sky-300",
     videoUrl: TalkTuah,
     music: "src/assets/music/MDK - Press Start [FREE DOWNLOAD].mp3",
     initialBlockWidth: 192,
@@ -13,7 +13,7 @@ export const LevelData = {
   },
   2: {
     name: "Memenome",
-    color: "green",
+    color: "to-pink-300",
     videoUrl: DonPollo,
     music: "src/assets/music/Dex Arson - Round 1.mp3",
     initialBlockWidth: 180,
@@ -22,7 +22,7 @@ export const LevelData = {
   },
   3: {
     name: "Song of the year",
-    color: "green",
+    color: "to-yellow-300",
     videoUrl: KSISong,
     music: "src/assets/music/Glorious Morning.mp3",
     initialBlockWidth: 180,
@@ -31,7 +31,7 @@ export const LevelData = {
   },
   4: {
     name: "Unexpected GOAT",
-    color: "green",
+    color: "to-green-300",
     videoUrl: Ronaldo,
     music: "src/assets/music/Robotic Nightmares.mp3",
     initialBlockWidth: 180,
@@ -40,7 +40,7 @@ export const LevelData = {
   },
   5: {
     name: "Finale",
-    color: "green",
+    color: "to-red-300",
     videoUrl: memenome,
     music: "src/assets/music/Dimrain47 - At the Speed of Light.mp3",
     initialBlockWidth: 180,

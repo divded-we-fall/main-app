@@ -176,8 +176,7 @@ const GameScreen = ({ lives, level, onWin, onGameOver, onLevelFail }) => {
           height: `${gameScreenHeight}px`,
           width: `${gameScreenWidth}px`,
         }}
-        className={`relative z-10 border-5 bg-red-200 overflow-hidden`}
-      >
+        className={`relative z-10 bg-gradient-to-b from-white ${level.color} border-4 border-black-700" overflow-hidden`}>
         {stackedBlocks.map((stackedBlock, index) => (
           <VideoClipper
             rectangle={stackedBlock}
@@ -195,8 +194,7 @@ const GameScreen = ({ lives, level, onWin, onGameOver, onLevelFail }) => {
           style={{
             opacity: stackedBlocks.length === numberOfBlocksPerGame ? 0 : 1,
           }}
-          className="h-full w-[1px] left-1/2 z-10 -translate-x-1/2 bg-red-600 m-auto absolute top-0"
-        ></div>
+          className="dashed-centerline"></div>
 
         <StackedBlocks stackedBlocks={stackedBlocks} />
 
@@ -222,9 +220,8 @@ const GameScreen = ({ lives, level, onWin, onGameOver, onLevelFail }) => {
             height: `${gameScreenHeight / numberOfBlocksPerGame}px`,
             width: `${movingBlockWidth}px`,
           }}
-          className={`text-center whitespace-nowrap border border-blue-700 absolute flex items-center justify-center bg-blue-400 ${
-            !isLevelFailed ? "moving-block" : ""
-          }`}
+          className={`text-center whitespace-nowrap absolute flex items-center justify-center bg-blue-400 border border-black-700 ${!isLevelFailed ? "moving-block" : ""
+            }`}
         >
           {`<div></div>`}
           <div className="h-full w-1 left-1/2 -translate-x-1/2 bg-red-500 m-auto absolute top-0"></div>
@@ -281,6 +278,7 @@ const StackedBlocks = ({ stackedBlocks }) => {
     </>
   );
 };
+
 const ComboDisplay = ({ stackedBlocks }) => {
   let comboPerfectCount = [...stackedBlocks]
     .reverse()
@@ -294,9 +292,9 @@ const ComboDisplay = ({ stackedBlocks }) => {
         opacity: comboPerfectCount > 1 ? 1 : 0,
         transition: "opacity 0.5s",
       }}
-      className="absolute bottom-2 left-2 text-white bg-green-500 px-2 py-1 rounded"
+      className="absolute bottom-4 left-4 text-black font-bold text-2xl bg-blue-400 px-2 py-1 rounded shadow"
     >
-      COMBO! x{comboPerfectCount}
+      x{comboPerfectCount} COMBO!
     </h1>
   );
 };

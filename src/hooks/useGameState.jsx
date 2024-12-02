@@ -6,7 +6,7 @@ export const useGameState = () => {
   const [gameState, setGameState] = useState({
     lives: 3,
     currentScreen: "title",
-    highestLevel: 5,
+    highestLevel: 1,
     selectedLevel: null,
     score: 0,
   });

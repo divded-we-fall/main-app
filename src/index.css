@@ -33,6 +33,22 @@ a {
   color: var(--neutral-6);
 }
 
+.dashed-centerline {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 100%;
+  width: 1px;
+  background: repeating-linear-gradient(
+    to bottom,
+    black 0,
+    black 5px,
+    transparent 5px,
+    transparent 10px
+  );
+  transform: translateX(-50%);
+}
+
 @layer base {
   h1 {
     @apply text-3xl;
