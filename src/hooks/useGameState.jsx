@@ -4,7 +4,7 @@ import select_sfx from "../assets/sfx/select.mp3";
 export const useGameState = () => {
   const [gameState, setGameState] = useState({
     lives: 3,
-    currentScreen: "title",
+    currentScreen: "intro",
     highestLevel: 1,
     selectedLevel: null,
     score: 0,
