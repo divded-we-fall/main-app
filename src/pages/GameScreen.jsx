@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, Fragment, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useRef, Fragment, useMemo, useCallback } from "react";
 import {
   gameScreenWidth,
   blockWidth,
@@ -104,7 +104,7 @@ const GameScreen = ({ lives, level, onWin, onGameOver, onLevelFail }) => {
     }
   }, [stackedBlocks, onWin, level.videoLength]);
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = useCallback((e) => {
     if (e.code === "Space" && !isLevelFailed) {
       if (
         movingBlockRef.current &&
@@ -155,7 +155,7 @@ const GameScreen = ({ lives, level, onWin, onGameOver, onLevelFail }) => {
         ]);
       }
     }
-  };
+  }, [isLevelFailed, movingBlockWidth, stackedBlocks, handleLevelFail]);
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);

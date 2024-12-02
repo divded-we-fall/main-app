@@ -1,5 +1,5 @@
 import React from "react";
-import { LevelData } from "../data/LevelData";
+import { LevelData } from "../data/levelData";
 
 const LevelSelectScreen = ({ onLevelSelect, highestLevel }) => {
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   TitleScreen,
   LevelSelectScreen,
@@ -34,7 +34,7 @@ const ScreenManager = () => {
 
   switch (gameState.currentScreen) {
     case "intro":
-      return <IntroScreen onIntroContinue={startGame} />; 
+      return <IntroScreen onIntroContinue={startGame} />;
     case "title":
       return <TitleScreen onStart={startGame} />;
     case "level-select":

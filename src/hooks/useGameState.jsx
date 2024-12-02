@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { LevelData } from "../data/LevelData";
 import select_sfx from "../assets/sfx/select.mp3";
 
 export const useGameState = () => {
