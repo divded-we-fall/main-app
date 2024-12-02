@@ -26,7 +26,8 @@ const SentenceFader = ({ children, delay = 0 }) => {
 
 const IntroScreen = ({ onIntroContinue }) => {
     return (
-        <div className="flex items-center justify-center h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500">
+        <div className="flex items-center flex-col justify-center h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500">
+            <h2 className='text-white'>USE FULLSCREEN FOR BEST EXPERIENCE!</h2>
             <div className="bg-gray-800 p-8 rounded-lg shadow-lg max-w-4xl w-full">
                 <div className="grid grid-cols-2 gap-x-3">
                     <div>

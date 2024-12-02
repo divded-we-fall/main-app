@@ -33,6 +33,8 @@ const ScreenManager = () => {
   } = useGameState();
 
   switch (gameState.currentScreen) {
+    case "intro":
+      return <IntroScreen onIntroContinue={startGame} />; 
     case "title":
       return <TitleScreen onStart={startGame} />;
     case "level-select":

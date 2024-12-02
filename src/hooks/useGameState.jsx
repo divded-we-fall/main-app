@@ -38,19 +38,20 @@ export const useGameState = () => {
     }));
   };
 
-  const gameOver = (score) => {
+  const gameOver = () => {
     setGameState((prev) => ({
       ...prev,
       currentScreen: "lose",
-      score: score,
+      highestLevel: 1
     }));
   };
 
-  const winLevel = () => {
+  const winLevel = (score) => {
     setGameState((prev) => ({
       ...prev,
       currentScreen: "win",
       highestLevel: prev.selectedLevel === prev.highestLevel ? prev.highestLevel + 1 : prev.highestLevel, 
+      score: prev.score + score
     }));
   };
 

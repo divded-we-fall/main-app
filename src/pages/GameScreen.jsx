@@ -97,7 +97,7 @@ const GameScreen = ({ lives, level, onWin, onGameOver, onLevelFail }) => {
       bgAudio.volume = 0;
       playSFX(win_level_sfx, 0.2);
       const winTimer = setTimeout(() => {
-        onWin(totalScore);
+        onWin(parseInt(totalScore));
       }, level.videoLength * 1000);
 
       // Clean up the timer if the component unmounts
