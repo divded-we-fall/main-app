@@ -248,7 +248,7 @@ const StackedBlocks = ({ stackedBlocks }) => {
                 width: `${stackedBlock.width}px`,
                 height: `${gameScreenHeight / numberOfBlocksPerGame}px`,
               }}
-              className="absolute bg-blue-500 border border-blue-600"
+              className="absolute bg-blue-400 border border-blue-700"
             >
               <div className="h-full w-1 left-1/2 -translate-x-1/2 bg-red-500 m-auto absolute top-0"></div>
             </div>
