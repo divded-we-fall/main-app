@@ -14,7 +14,6 @@ import {
 import { AnimatedNumberChange, VideoClipper } from "../components/index.js";
 import { EmptyHeartIcon, FilledHeartIcon } from "../assets/icons/index.js";
 import "../styles/GameScreen.css";
-import { SpongeBobBrainRotQuizVideo } from "../assets/videos/index.js";
 import LevelFailModal from "./LevelFailModal.jsx";
 
 import lose_game_sfx from "../assets/sfx/lose_game.wav";
@@ -183,6 +182,7 @@ const GameScreen = ({ lives, level, onWin, onGameOver, onLevelFail }) => {
           <VideoClipper
             rectangle={stackedBlock}
             index={index}
+            video={level.videoUrl}
             reveal={stackedBlocks.length === numberOfBlocksPerGame}
           />
         ))}

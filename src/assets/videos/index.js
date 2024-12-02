@@ -1,3 +1,5 @@
-export { default as SpongeBobBrainRotQuizVideo } from './spongebob-brain-rot-quiz.mov';
-export { default as SpeedTrollingKSI } from './speed-troll-ksi.mp4';
-export { default as FitXFearless } from './fitxfearless.mp4';
+export { default as DonPollo } from './don-pollo.mp4';
+export { default as KSISong } from './ksi-song.mp4';
+export { default as memenome } from './memenome.mp4';
+export { default as Ronaldo } from './ronaldo.mp4';
+export { default as TalkTuah } from './talk-tuah.mp4';

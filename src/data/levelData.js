@@ -1,49 +1,51 @@
+import { DonPollo, TalkTuah, Ronaldo, KSISong, memenome} from '../assets/videos/index'
+
 // Level Data Configuration
 export const LevelData = {
   1: {
-    name: "Greatest Podcast OAT",
+    name: "Peak Podcast",
     color: "blue",
-    videoUrl: "/videos/ocean-waves.mp4",
+    videoUrl: TalkTuah,
     music: "src/assets/music/MDK - Press Start [FREE DOWNLOAD].mp3",
     initialBlockWidth: 192,
     speed: 1,
-    videoLength: 4
+    videoLength: 7
   },
   2: {
-    name: "Forest Whispers",
+    name: "Memenome",
     color: "green",
-    videoUrl: "/videos/forest-whispers.mp4",
+    videoUrl: DonPollo,
     music: "src/assets/music/Dex Arson - Round 1.mp3",
     initialBlockWidth: 180,
     speed: 1.2,
-    videoLength: 4
+    videoLength: 15
   },
   3: {
-    name: "Forest Whispers",
+    name: "Song of the year",
     color: "green",
-    videoUrl: "/videos/forest-whispers.mp4",
+    videoUrl: KSISong,
     music: "src/assets/music/Glorious Morning.mp3",
     initialBlockWidth: 180,
     speed: 1.2,
-    videoLength: 4
+    videoLength: 21
   },
   4: {
-    name: "Forest Whispers",
+    name: "Unexpected GOAT",
     color: "green",
-    videoUrl: "/videos/forest-whispers.mp4",
+    videoUrl: Ronaldo,
     music: "src/assets/music/Robotic Nightmares.mp3",
     initialBlockWidth: 180,
     speed: 1.2,
-    videoLength: 4
+    videoLength: 12
   },
   5: {
-    name: "Forest Whispers",
+    name: "Finale",
     color: "green",
-    videoUrl: "/videos/forest-whispers.mp4",
+    videoUrl: memenome,
     music: "src/assets/music/Dimrain47 - At the Speed of Light.mp3",
     initialBlockWidth: 180,
     speed: 1.2,
-    videoLength: 4
+    videoLength: 38
   },
   // Add more levels...
 };

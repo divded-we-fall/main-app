@@ -1,8 +1,7 @@
 import React, { useEffect, useRef } from 'react';
-import { SpongeBobBrainRotQuizVideo, SpeedTrollingKSI, FitXFearless } from '../assets/videos';
 import { gameScreenHeight, blockWidth, gameScreenWidth, numberOfBlocksPerGame } from '../data/constants';
 
-const VideoClipper = ({ rectangle, index, reveal = false }) => {
+const VideoClipper = ({ rectangle, index, video, reveal = false }) => {
   const videoRef = useRef(null);
 
   useEffect(() => {
@@ -36,7 +35,7 @@ const VideoClipper = ({ rectangle, index, reveal = false }) => {
       </svg>
       <video
         ref={videoRef}
-        src={FitXFearless}
+        src={video}
         width={blockWidth}
         height={gameScreenHeight}
         style={{
