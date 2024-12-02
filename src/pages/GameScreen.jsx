@@ -7,7 +7,7 @@ import {
   leniency,
 } from "../data/constants.js";
 import {
-  calculateMissBlockColour,
+  calculateMissBlockOpacityColour,
   calculateMissBlockWidth,
   getRandomItemInArray,
 } from "../utils/gameScreenUtils.js";
@@ -263,7 +263,7 @@ const StackedBlocks = ({ stackedBlocks }) => {
                     }px`,
                   width: `${missBlockWidth}px`,
                   height: `${gameScreenHeight / numberOfBlocksPerGame}px`,
-                  backgroundColor: `${calculateMissBlockColour(
+                  backgroundColor: `${calculateMissBlockOpacityColour(
                     missBlockWidth
                   )}`,
                 }}

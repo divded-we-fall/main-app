@@ -1,27 +1,22 @@
 import { gameScreenWidth, leniency } from "../data/constants";
 
-const calculateMissBlockColour = (missBlockWidth) => {
-  const green = [34, 197, 94]; // RGB for #22c55e
+const calculateMissBlockOpacityColour = (missBlockWidth) => {
   const red = [255, 0, 0]; // RGB for red
 
-  // Define the range for missBlockWidth (e.g., 0 to 500)
+  // Define the range for missBlockWidth (e.g., 0 to 200)
   const min = 0;
   const max = 200;
 
   // Clamp missBlockWidth within the range
   const clampedWidth = Math.max(min, Math.min(missBlockWidth, max));
 
-  // Calculate the interpolation factor (0 for green, 1 for red)
-  const t = (clampedWidth - min) / (max - min);
+  // Calculate the opacity factor (0 to 1)
+  const opacity = (clampedWidth - min) / (max - min);
 
-  // Interpolate the color
-  const interpolatedColor = green.map((g, i) =>
-    Math.round(g + t * (red[i] - g))
-  );
-
-  // Convert RGB to a CSS string
-  return `rgb(${interpolatedColor.join(",")})`;
+  // Convert RGB and opacity to a CSS string
+  return `rgba(${red.join(",")}, ${opacity.toFixed(2)})`;
 };
+
 
 const calculateMissBlockWidth = (movingBlockLeft, movingBlockWidth) => {
   const rawWidth = Math.abs(
@@ -35,7 +30,7 @@ const getRandomItemInArray = (array) => {
 };
 
 export {
-  calculateMissBlockColour,
+  calculateMissBlockOpacityColour,
   calculateMissBlockWidth,
   getRandomItemInArray,
 };
