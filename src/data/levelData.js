@@ -7,6 +7,7 @@ export const LevelData = {
     music: "src/assets/music/MDK - Press Start [FREE DOWNLOAD].mp3",
     initialBlockWidth: 192,
     speed: 1,
+    videoLength: 4
   },
   2: {
     name: "Forest Whispers",
@@ -15,6 +16,7 @@ export const LevelData = {
     music: "src/assets/music/Dex Arson - Round 1.mp3",
     initialBlockWidth: 180,
     speed: 1.2,
+    videoLength: 4
   },
   3: {
     name: "Forest Whispers",
@@ -23,6 +25,7 @@ export const LevelData = {
     music: "src/assets/music/Glorious Morning.mp3",
     initialBlockWidth: 180,
     speed: 1.2,
+    videoLength: 4
   },
   4: {
     name: "Forest Whispers",
@@ -31,6 +34,7 @@ export const LevelData = {
     music: "src/assets/music/Robotic Nightmares.mp3",
     initialBlockWidth: 180,
     speed: 1.2,
+    videoLength: 4
   },
   5: {
     name: "Forest Whispers",
@@ -39,6 +43,7 @@ export const LevelData = {
     music: "src/assets/music/Dimrain47 - At the Speed of Light.mp3",
     initialBlockWidth: 180,
     speed: 1.2,
+    videoLength: 4
   },
   // Add more levels...
 };

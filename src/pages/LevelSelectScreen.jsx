@@ -1,33 +1,15 @@
 import React from "react";
+import { LevelData } from "../data/LevelData";
 
 const LevelSelectScreen = ({ onLevelSelect, highestLevel }) => {
-  const levels = [
-    {
-      id: 1,
-      name: "Female empowerment podcast",
-      locked: false,
-    },
-    {
-      id: 2,
-      name: "Kai cenat clip",
-      locked: highestLevel < 2 ? true : false,
-    },
-    {
-      id: 3,
-      name: "Song of the year",
-      locked: highestLevel < 3 ? true : false,
-    },
-    {
-      id: 4,
-      name: "City Lights",
-      locked: highestLevel < 4 ? true : false,
-    },
-    {
-      id: 5,
-      name: "Cosmic Journey",
-      locked: highestLevel < 5 ? true : false,
-    },
-  ];
+
+  const levels = Object.entries(LevelData).map(([key, value]) => ({
+    id: parseInt(key, 10),
+    ...value,
+  }));
+
+  console.log(levels);
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-900 via-indigo-900 to-black flex items-center justify-center p-4 w-full">

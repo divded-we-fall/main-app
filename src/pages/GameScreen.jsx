@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, Fragment } from "react";
+import React, { useState, useEffect, useRef, Fragment, useCallback, useMemo } from "react";
 import {
   gameScreenWidth,
   blockWidth,
@@ -51,6 +51,15 @@ const GameScreen = ({ lives, level, onWin, onGameOver, onLevelFail }) => {
     };
   }, []);
 
+  const totalScore = useMemo(() => {
+    let comboCount = 0;
+    return stackedBlocks.reduce((score, block) => {
+      const missBlockWidth = calculateMissBlockWidth(block.left, block.width);
+      comboCount = missBlockWidth < leniency ? comboCount + 1 : 0;
+      return score + Math.max(300 - missBlockWidth * Math.max(comboCount, 1));
+    }, 0);
+  }, [stackedBlocks, leniency]);
+
   //play sfx
   const playSFX = (file, volume) => {
     const sfx = new Audio(file);
@@ -85,10 +94,16 @@ const GameScreen = ({ lives, level, onWin, onGameOver, onLevelFail }) => {
 
   useEffect(() => {
     if (stackedBlocks.length === numberOfBlocksPerGame) {
+      bgAudio.volume = 0;
       playSFX(win_level_sfx, 0.2);
-      onWin();
+      const winTimer = setTimeout(() => {
+        onWin(totalScore);
+      }, level.videoLength * 1000);
+
+      // Clean up the timer if the component unmounts
+      return () => clearTimeout(winTimer);
     }
-  }, [stackedBlocks, onWin]);
+  }, [stackedBlocks, onWin, level.videoLength]);
 
   const handleKeyDown = (e) => {
     if (e.code === "Space" && !isLevelFailed) {
@@ -172,7 +187,7 @@ const GameScreen = ({ lives, level, onWin, onGameOver, onLevelFail }) => {
           />
         ))}
 
-        <ScoreDisplay stackedBlocks={stackedBlocks} />
+        <ScoreDisplay totalScore={totalScore} />
 
         <ComboDisplay stackedBlocks={stackedBlocks} />
 
@@ -202,9 +217,8 @@ const GameScreen = ({ lives, level, onWin, onGameOver, onLevelFail }) => {
             "--block-width": `${movingBlockWidth}px`,
             "--game-screen-width": `${gameScreenWidth}px`,
             "--animation-duration": `${level.speed}s`, // Set the animation duration here
-            bottom: `${
-              (stackedBlocks.length * gameScreenHeight) / numberOfBlocksPerGame
-            }px`,
+            bottom: `${(stackedBlocks.length * gameScreenHeight) / numberOfBlocksPerGame
+              }px`,
             height: `${gameScreenHeight / numberOfBlocksPerGame}px`,
             width: `${movingBlockWidth}px`,
           }}
@@ -232,9 +246,8 @@ const StackedBlocks = ({ stackedBlocks }) => {
             <div
               style={{
                 left: `${stackedBlock.left}px`,
-                bottom: `${
-                  (index * gameScreenHeight) / numberOfBlocksPerGame
-                }px`,
+                bottom: `${(index * gameScreenHeight) / numberOfBlocksPerGame
+                  }px`,
                 width: `${stackedBlock.width}px`,
                 height: `${gameScreenHeight / numberOfBlocksPerGame}px`,
               }}
@@ -249,9 +262,8 @@ const StackedBlocks = ({ stackedBlocks }) => {
                     650,
                     stackedBlock.left + stackedBlock.width / 2
                   )}px`,
-                  bottom: `${
-                    (index * gameScreenHeight) / numberOfBlocksPerGame
-                  }px`,
+                  bottom: `${(index * gameScreenHeight) / numberOfBlocksPerGame
+                    }px`,
                   width: `${missBlockWidth}px`,
                   height: `${gameScreenHeight / numberOfBlocksPerGame}px`,
                   backgroundColor: `${calculateMissBlockColour(
@@ -289,21 +301,7 @@ const ComboDisplay = ({ stackedBlocks }) => {
   );
 };
 
-const ScoreDisplay = ({ stackedBlocks }) => {
-  let totalScore = 0;
-  let comboCount = 0;
-  for (let i = 0; i < stackedBlocks.length; i++) {
-    const missBlockWidth = calculateMissBlockWidth(
-      stackedBlocks[i].left,
-      stackedBlocks[i].width
-    );
-    if (missBlockWidth < leniency) {
-      comboCount++;
-    } else {
-      comboCount = 0;
-    }
-    totalScore += Math.max(300 - missBlockWidth * Math.max(comboCount, 1));
-  }
+const ScoreDisplay = ({ totalScore }) => {
   return <AnimatedNumberChange score={totalScore} />;
 };
 

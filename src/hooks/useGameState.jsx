@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { LevelData } from "../data/levelData";
+import { LevelData } from "../data/LevelData";
 import select_sfx from "../assets/sfx/select.mp3";
 
 export const useGameState = () => {
@@ -8,7 +8,6 @@ export const useGameState = () => {
     currentScreen: "title",
     highestLevel: 5,
     selectedLevel: null,
-    currentLevel: null,
     score: 0,
   });
 
@@ -29,7 +28,6 @@ export const useGameState = () => {
       ...prev,
       selectedLevel: level,
       currentScreen: "game",
-      currentLevel: LevelData[level],
     }));
   };
 
@@ -52,8 +50,7 @@ export const useGameState = () => {
     setGameState((prev) => ({
       ...prev,
       currentScreen: "win",
-      highestLevel: prev.highestLevel + 1,
-      currentLevel: prev.currentLevel + 1,
+      highestLevel: prev.selectedLevel === prev.highestLevel ? prev.highestLevel + 1 : prev.highestLevel, 
     }));
   };
 

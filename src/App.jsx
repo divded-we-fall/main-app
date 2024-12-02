@@ -8,6 +8,9 @@ import {
   GameWinScreen,
 } from "./pages";
 import { useGameState } from "./hooks/useGameState";
+import IntroScreen from "./pages/IntroScreen";
+import { LevelData } from "./data/levelData";
+
 
 const App = () => {
   return (
@@ -33,7 +36,6 @@ const ScreenManager = () => {
     case "title":
       return <TitleScreen onStart={startGame} />;
     case "level-select":
-      console.log(gameState.highestLevel);
       return (
         <LevelSelectScreen
           onLevelSelect={selectLevel}
@@ -44,7 +46,7 @@ const ScreenManager = () => {
       return (
         <GameScreen
           lives={gameState.lives}
-          level={gameState.currentLevel}
+          level={LevelData[gameState.selectedLevel]}
           onWin={winLevel}
           onGameOver={gameOver}
           onLevelFail={levelFail}
@@ -55,7 +57,7 @@ const ScreenManager = () => {
     case "win":
       return gameState.highestLevel < 6 ? (
         <WinScreen
-          level={gameState.currentLevel}
+          level={LevelData[gameState.selectedLevel]}
           score={gameState.score}
           onContinue={continueToLevelSelect}
         />

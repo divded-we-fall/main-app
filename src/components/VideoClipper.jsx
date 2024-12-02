@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { SpongeBobBrainRotQuizVideo, SpeedTrollingKSI, FitXFearless } from '../assets/videos';
-import { gameScreenHeight, blockWidth, gameScreenWidth } from '../data/constants';
+import { gameScreenHeight, blockWidth, gameScreenWidth, numberOfBlocksPerGame } from '../data/constants';
 
 const VideoClipper = ({ rectangle, index, reveal = false }) => {
   const videoRef = useRef(null);
@@ -27,9 +27,9 @@ const VideoClipper = ({ rectangle, index, reveal = false }) => {
             <rect
               key={index}
               x={rectangle.left - gameScreenWidth / 2 + blockWidth / 2}
-              y={gameScreenHeight - 25.8 * (index + 1)}
+              y={gameScreenHeight - (gameScreenHeight / numberOfBlocksPerGame) * (index + 1)}
               width={rectangle.width}
-              height={25.8}
+              height={gameScreenHeight / numberOfBlocksPerGame}
             />
           </clipPath>
         </defs>
