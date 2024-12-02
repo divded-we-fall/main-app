@@ -27,7 +27,7 @@ const SentenceFader = ({ children, delay = 0 }) => {
 const IntroScreen = ({ onIntroContinue }) => {
     return (
         <div className="flex items-center flex-col justify-center min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-4">
-            <h2 className='text-white text-center mb-2 text-sm sm:text-base'>USE FULLSCREEN FOR BEST EXPERIENCE!</h2>
+            <h2 className='text-white text-center mb-2 text-sm sm:text-base'>USE FULLSCREEN FOR BEST EXPERIENCE! (DON'T USE SAFARI AND PLEASE LOWER VOLUME TO 30%)</h2>
             <div className="bg-gray-800 p-4 sm:p-8 rounded-lg shadow-lg max-w-4xl w-full overflow-y-auto max-h-[90vh]">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-3">
                     <div className="overflow-y-auto max-h-[60vh] sm:max-h-none pr-2">
