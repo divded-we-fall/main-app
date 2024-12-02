@@ -56,6 +56,7 @@ const ScreenManager = () => {
       return gameState.highestLevel < 6 ? (
         <WinScreen
           level={gameState.currentLevel}
+          score={gameState.score}
           onContinue={continueToLevelSelect}
         />
       ) : (
