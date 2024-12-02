@@ -14,9 +14,9 @@ const SentenceFader = ({ children, delay = 0 }) => {
     return (
         <div
             className={`
-                transition-all text-xl duration-1000 ease-in-out
+                transition-all text-base sm:text-xl duration-1000 ease-in-out
                 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
-                mb-4 text-white
+                mb-2 sm:mb-4 text-white
             `}
         >
             {children}
@@ -26,11 +26,11 @@ const SentenceFader = ({ children, delay = 0 }) => {
 
 const IntroScreen = ({ onIntroContinue }) => {
     return (
-        <div className="flex items-center flex-col justify-center h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500">
-            <h2 className='text-white'>USE FULLSCREEN FOR BEST EXPERIENCE!</h2>
-            <div className="bg-gray-800 p-8 rounded-lg shadow-lg max-w-4xl w-full">
-                <div className="grid grid-cols-2 gap-x-3">
-                    <div>
+        <div className="flex items-center flex-col justify-center min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-4">
+            <h2 className='text-white text-center mb-2 text-sm sm:text-base'>USE FULLSCREEN FOR BEST EXPERIENCE!</h2>
+            <div className="bg-gray-800 p-4 sm:p-8 rounded-lg shadow-lg max-w-4xl w-full overflow-y-auto max-h-[90vh]">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-3">
+                    <div className="overflow-y-auto max-h-[60vh] sm:max-h-none pr-2">
                         <SentenceFader delay={0}>
                             You are an aspiring web developer...
                         </SentenceFader>
@@ -57,17 +57,21 @@ const IntroScreen = ({ onIntroContinue }) => {
                             Which brings you here...
                         </SentenceFader>
                         <SentenceFader delay={28000}>
-                            Center the blocks which form the podcast clips on the screen and master the art of centering divs!!!
+                            Center the blocks which form the brain rot clips on the screen and master the art of centering divs!!!
                         </SentenceFader>
                     </div>
-                    <div>
+                    <div className="hidden sm:block">
                         <SentenceFader delay={13000}>
-                            <img className='h-full' src="https://cdn.discordapp.com/attachments/1311482389587034132/1312645096377811044/image.png?ex=674de842&is=674c96c2&hm=2b7ea7fc072f9728449333bfe0517c66c0e79e642c07aac3e24525865ac6c652&" />
+                            <img 
+                                className='h-full w-full object-contain' 
+                                src="https://cdn.discordapp.com/attachments/1311482389587034132/1312645096377811044/image.png?ex=674de842&is=674c96c2&hm=2b7ea7fc072f9728449333bfe0517c66c0e79e642c07aac3e24525865ac6c652&" 
+                                alt="Intro graphic"
+                            />
                         </SentenceFader>
                     </div>
                 </div>
-                <div className="mt-8 text-center">
-                    <SentenceFader delay={32000} >
+                <div className="mt-4 sm:mt-8 text-center">
+                    <SentenceFader delay={32000}>
                         <button
                             onClick={onIntroContinue}
                             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"

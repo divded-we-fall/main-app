@@ -30,11 +30,12 @@ const ScreenManager = () => {
     winLevel,
     restartGame,
     continueToLevelSelect,
+    onIntroContinue
   } = useGameState();
 
   switch (gameState.currentScreen) {
     case "intro":
-      return <IntroScreen onIntroContinue={startGame} />;
+      return <IntroScreen onIntroContinue={onIntroContinue} />;
     case "title":
       return <TitleScreen onStart={startGame} />;
     case "level-select":

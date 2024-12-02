@@ -25,8 +25,8 @@ const VideoClipper = ({ rectangle, index, video, reveal = false }) => {
           <clipPath id={`clip-path-${index}`}>
             <rect
               key={index}
-              x={rectangle.left - gameScreenWidth / 2 + blockWidth / 2}
-              y={gameScreenHeight - (gameScreenHeight / numberOfBlocksPerGame) * (index + 1)}
+              x={rectangle.left - gameScreenWidth / 2 + blockWidth / 2 + 5}
+              y={gameScreenHeight - (gameScreenHeight / numberOfBlocksPerGame) * (index + 1) - 7}
               width={rectangle.width}
               height={gameScreenHeight / numberOfBlocksPerGame}
             />

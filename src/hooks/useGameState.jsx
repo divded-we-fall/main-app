@@ -4,7 +4,7 @@ import select_sfx from "../assets/sfx/select.mp3";
 export const useGameState = () => {
   const [gameState, setGameState] = useState({
     lives: 3,
-    currentScreen: "intro",
+    currentScreen: "title",
     highestLevel: 1,
     selectedLevel: null,
     score: 0,
@@ -20,6 +20,11 @@ export const useGameState = () => {
     playSFX(select_sfx, 0.2);
     setGameState((prev) => ({ ...prev, currentScreen: "level-select" }));
   };
+
+  const onIntroContinue = () => {
+    playSFX(select_sfx, 0.2);
+    setGameState((prev) => ({ ...prev, currentScreen: "title" }));
+  }
 
   const selectLevel = (level) => {
     playSFX(select_sfx, 0.2);
@@ -80,5 +85,6 @@ export const useGameState = () => {
     restartGame,
     levelFail,
     continueToLevelSelect,
+    onIntroContinue
   };
 };
